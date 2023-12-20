@@ -1,2 +1,4 @@
-# kick-off-web
-Web Server for Kick-Off Service
+# kick-off-server
+API Server for KICK-OFF Service
+
+he
