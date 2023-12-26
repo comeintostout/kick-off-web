@@ -1,13 +1,17 @@
 package offside.server.stadium.controller;
 
+import jakarta.validation.Valid;
 import java.io.IOException;
 
+import offside.server.stadium.domain.Stadium;
+import offside.server.stadium.dto.StadiumDto;
 import offside.server.stadium.service.StadiumService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -37,6 +41,20 @@ public class StadiumController {
         model.addAttribute("location", location.equals("") ? "전체" : location);
         model.addAttribute("outputCnt", stadiumList.size());
         return "StadiumSearchPage";
+    }
+    
+    // Stadium 등록 요청
+    @PostMapping("/stadium")
+    @ResponseBody
+    public Stadium registerStadium(@RequestBody @Valid StadiumDto stadiumData, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            throw new IllegalArgumentException(bindingResult.getFieldError().getDefaultMessage());
+        }
+        if(stadiumData.externalUrl == null)
+            stadiumData.externalUrl = "";
+        
+        final var stadium = stadiumService.registerStadium(stadiumData);
+        return stadium;
     }
     
     @ExceptionHandler(IllegalArgumentException.class)

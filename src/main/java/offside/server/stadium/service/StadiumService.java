@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 
 import offside.server.stadium.domain.Stadium;
+import offside.server.stadium.dto.StadiumDto;
 import offside.server.stadium.repository.StadiumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,5 +31,11 @@ public class StadiumService {
         }else{
             return stadiumRepository.findAllByLocationAndContactPhone(location, contactPhone);
         }
+    }
+    
+    public Stadium registerStadium(StadiumDto stadiumData){
+        // stadium 등록
+        Stadium stadium = new Stadium(stadiumData);
+        return stadiumRepository.save(stadium);
     }
 }
